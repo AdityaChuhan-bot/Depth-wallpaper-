@@ -1,0 +1,6 @@
+{
+  "name": "DepthLock",
+  "description": "AI Depth Effect Wallpaper & Lock Screen with custom foreground segmentation and clock overlap.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

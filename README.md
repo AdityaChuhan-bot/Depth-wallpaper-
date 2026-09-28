@@ -1,11 +1,86 @@
-<div align="center">
+# DepthLock – AI Depth Effect Wallpaper & Lock Screen
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+DepthLock is a complete, native Android application built with **Jetpack Compose**, **Material 3**, and on-device **AI Computer Vision** that creates an authentic iOS-style depth effect for wallpapers. Users can select any custom photograph, isolate the foreground subject from the background, and create a 3D depth-effect wallpaper where the subject realistically overlaps behind and in front of the lock screen clock.
 
-  <h1>Built with AI Studio</h2>
+---
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🎯 Target Platform & Hardware Profile
+- **Target Device**: Motorola Moto G85 5G (calibrated for 1080 × 2400 20:9 OLED display)
+- **Target Android Version**: Android 16 (API Level 36)
+- **Minimum Android Version**: Android 10 (API Level 29)
+- **Package Name**: `com.aditya.depthlock`
+- **Architecture**: MVVM with Repository Pattern, Room local database, StateFlow, Kotlin Coroutines
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+---
 
-</div>
+## 🚀 Key Features
+
+### 1. Custom Image Import & Framing
+- **Android Photo Picker**: Zero-permission media selection compliant with Google Play policy (`PickVisualMedia`).
+- **Framing & Aspect Ratio**: Tailored 20:9 phone frame preview with pinch-to-zoom, pan, 90° rotation, and real-time clock overlap placement guides.
+- **Ready Presets**: Pre-seeded depth scenes (*Golden Peak Hiker*, *Neon Skyline Wanderer*) for immediate testing without needing a gallery photo.
+
+### 2. On-Device AI Depth Segmentation
+- **Dual-Engine Segmentation**:
+  1. **Google ML Kit Selfie Segmentation**: High-precision neural network running locally on device for humans and portraits.
+  2. **Adaptive Saliency Segmentation Engine**: Edge-aware, center-weighted, and border contrast color-clustering detector for pets, cars, monuments, plants, and objects when no human is detected.
+- **Manual Mask Refinement Tool**:
+  - Interactive touch canvas with Paint (draw foreground) and Eraser (remove background) brush modes.
+  - Brush radius slider (8px to 80px).
+  - Mask Invert tool.
+  - Full Undo / Redo history stack.
+  - "Retry AI" and "Auto-Smooth Edges" operations.
+
+### 3. iOS-Style Depth Wallpaper Editor
+- **3D Depth Overlap**: Subject is layered in front of the clock while the remaining background layer sits behind it.
+- **Depth Shadow**: Realistic soft Gaussian drop shadow cast by the foreground subject onto the clock digits.
+- **Clock Customization**:
+  - 7 typography styles: Modern Round, Ultra Heavy, Serif Elegant, Tech Thin, Cyber Mono, Compact Bold, Stacked Poster.
+  - Dynamic size slider (64sp to 130sp).
+  - Vertical height positioning slider (-120dp to +140dp).
+  - 9 curated color palettes with individual tinting.
+- **Date & Widgets**:
+  - Customizable date formats (`EEE, d MMM`, `d MMMM`, etc.).
+  - Position: Above Clock or Below Clock.
+  - Lock screen widgets: Weather (☀️ 72° Sunny), Battery (🔋 88%), Calendar (📅 2:30 PM), Steps (👟 6,420).
+- **Backdrop Controls**:
+  - Background Gaussian blur slider (0px to 25px).
+  - Background dimming slider (0% to 65%) to enhance clock legibility.
+  - Subject scale (0.7x to 1.5x) and drag-to-reposition.
+
+### 4. Wallpaper Export & Android System Integration
+- **High-Resolution Compositor**: Renders the complete 3-layer composition (background, clock, subject, and shadow) at 1080 × 2400 device resolution.
+- **Native WallpaperManager API**:
+  - Apply to **Lock Screen** (`FLAG_LOCK`).
+  - Apply to **Home Screen** (`FLAG_SYSTEM`).
+  - Apply to **Both Screens** (`FLAG_SYSTEM or FLAG_LOCK`).
+- **Gallery Export**: Saves high-resolution PNG to device gallery under `Pictures/DepthLock` using Android's Scoped Storage `MediaStore` API.
+- **Room Database Persistence**: Saves depth wallpaper configurations, allowing users to re-open, edit, or delete projects anytime.
+
+### 5. Custom Lock Screen Simulation Mode
+- An interactive fullscreen lock screen simulation inside the app.
+- Dynamic ticking clock, lock icon, simulated flashlight and camera quick shortcuts, and "Swipe up to unlock" affordance.
+- Clearly distinguished as a preview mode adhering to Android platform security guidelines.
+
+---
+
+## 🔒 Privacy & Performance
+- **100% On-Device AI**: Zero cloud uploads. All segmentation and compositing algorithms run locally on the smartphone CPU/GPU.
+- **Zero Data Collection**: No analytics SDKs, trackers, or external API keys required.
+- **Memory Optimized**: Employs bitmap downsampling during editing to avoid OutOfMemory (OOM) errors on mid-range devices (such as Motorola Moto G85 5G), rendering at full resolution only during final export.
+
+---
+
+## 🛠️ Build & Installation
+
+### Build with Gradle
+```bash
+gradle :app:assembleDebug
+```
+The output APK will be generated at:
+```
+app/build/outputs/apk/debug/app-debug.apk
+```
+
+### GitHub Actions CI/CD
+A GitHub Actions workflow is pre-configured at `.github/workflows/build.yml` to automatically build and publish debug APK artifacts on push and pull requests.

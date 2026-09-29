@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ui.screens.crop.ImageCropScreen
-import com.example.ui.screens.editor.DepthEditorScreen
+import com.example.ui.screens.editor.WallpaperEditorScreen
 import com.example.ui.screens.home.HomeScreen
 import com.example.ui.screens.preview.LockScreenPreviewScreen
 import com.example.ui.screens.segment.DepthSegmentScreen
@@ -51,7 +51,7 @@ fun DepthLockNavGraph(
         }
 
         composable(Screen.Editor.route) {
-            DepthEditorScreen(
+            WallpaperEditorScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToSegment = { navController.navigate(Screen.Segment.route) },

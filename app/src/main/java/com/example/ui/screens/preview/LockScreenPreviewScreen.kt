@@ -54,7 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.ui.screens.editor.EditorClockWidget
+import com.example.ui.screens.editor.LiveClockDisplay
 import com.example.ui.theme.CyanAccent
 import com.example.ui.theme.DarkBackground
 import com.example.ui.theme.IndigoPrimary
@@ -134,7 +134,7 @@ fun LockScreenPreviewScreen(
 
             // 2. Depth Clock & Widgets (Layer behind subject when depth is on)
             if (config.depthOverlapEnabled) {
-                EditorClockWidget(
+                LiveClockDisplay(
                     config = config,
                     canvasHeight = canvasH.value,
                     modifier = Modifier.fillMaxWidth()
@@ -176,7 +176,7 @@ fun LockScreenPreviewScreen(
 
             // Clock on top if depth is disabled
             if (!config.depthOverlapEnabled) {
-                EditorClockWidget(
+                LiveClockDisplay(
                     config = config,
                     canvasHeight = canvasH.value,
                     modifier = Modifier.fillMaxWidth()

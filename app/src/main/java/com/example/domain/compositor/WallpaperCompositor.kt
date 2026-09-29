@@ -192,11 +192,21 @@ class WallpaperCompositor(private val context: Context) {
 
         val clockBaseY = (targetHeight * 0.22f) + config.clockVerticalOffset
         val density = targetWidth / 360f
+        val clockCenterX = (targetWidth / 2f) + (config.clockHorizontalOffset * density)
+
+        val resolvedTypeface = when (config.clockFontWeight) {
+            "thin" -> Typeface.create("sans-serif-thin", Typeface.NORMAL)
+            "normal" -> Typeface.create(style.typeface, Typeface.NORMAL)
+            "medium" -> Typeface.create("sans-serif-medium", Typeface.NORMAL)
+            "bold" -> Typeface.create(style.typeface, Typeface.BOLD)
+            "heavy" -> Typeface.create("sans-serif-black", Typeface.BOLD)
+            else -> style.typeface
+        }
 
         // Clock Text Paint
         val clockPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = clockColor
-            typeface = style.typeface
+            typeface = resolvedTypeface
             textSize = config.clockSizeSp * density
             textAlign = Paint.Align.CENTER
             letterSpacing = style.letterSpacing
@@ -232,24 +242,24 @@ class WallpaperCompositor(private val context: Context) {
             val minutesY = clockBaseY + (clockPaint.textSize * 0.75f)
 
             if (config.datePosition == "above_clock") {
-                canvas.drawText(dateDisplay, targetWidth / 2f, hoursY - (clockPaint.textSize * 0.65f), datePaint)
+                canvas.drawText(dateDisplay, clockCenterX, hoursY - (clockPaint.textSize * 0.65f), datePaint)
             }
-            canvas.drawText(hoursString, targetWidth / 2f, hoursY, clockPaint)
-            canvas.drawText(minutesString, targetWidth / 2f, minutesY, clockPaint)
+            canvas.drawText(hoursString, clockCenterX, hoursY, clockPaint)
+            canvas.drawText(minutesString, clockCenterX, minutesY, clockPaint)
 
             if (config.datePosition == "below_clock") {
-                canvas.drawText(dateDisplay, targetWidth / 2f, minutesY + (datePaint.textSize * 2.2f), datePaint)
+                canvas.drawText(dateDisplay, clockCenterX, minutesY + (datePaint.textSize * 2.2f), datePaint)
             }
         } else {
             // Single line HH:mm
             if (config.datePosition == "above_clock") {
-                canvas.drawText(dateDisplay, targetWidth / 2f, clockBaseY - (clockPaint.textSize * 0.82f), datePaint)
+                canvas.drawText(dateDisplay, clockCenterX, clockBaseY - (clockPaint.textSize * 0.82f), datePaint)
             }
 
-            canvas.drawText(timeString, targetWidth / 2f, clockBaseY, clockPaint)
+            canvas.drawText(timeString, clockCenterX, clockBaseY, clockPaint)
 
             if (config.datePosition == "below_clock") {
-                canvas.drawText(dateDisplay, targetWidth / 2f, clockBaseY + (datePaint.textSize * 2.2f), datePaint)
+                canvas.drawText(dateDisplay, clockCenterX, clockBaseY + (datePaint.textSize * 2.2f), datePaint)
             }
         }
     }

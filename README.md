@@ -20,10 +20,17 @@ DepthLock is a complete, native Android application built with **Jetpack Compose
 - **Framing & Aspect Ratio**: Tailored 20:9 phone frame preview with pinch-to-zoom, pan, 90° rotation, and real-time clock overlap placement guides.
 - **Ready Presets**: Pre-seeded depth scenes (*Golden Peak Hiker*, *Neon Skyline Wanderer*) for immediate testing without needing a gallery photo.
 
-### 2. On-Device AI Depth Segmentation
-- **Dual-Engine Segmentation**:
-  1. **Google ML Kit Selfie Segmentation**: High-precision neural network running locally on device for humans and portraits.
-  2. **Adaptive Saliency Segmentation Engine**: Edge-aware, center-weighted, and border contrast color-clustering detector for pets, cars, monuments, plants, and objects when no human is detected.
+### 2. On-Device AI Depth Segmentation (`ImageSegmentationHelper.kt`)
+- **Tri-Engine Computer Vision Architecture**:
+  1. **Google MediaPipe Tasks Vision (`ImageSegmenter`)**: Hardware-accelerated inference supporting DeepLabV3 (20+ categories: person, dog, cat, bird, car, horse, chair, etc.) and Selfie Multiclass (face, hair, body, clothes).
+  2. **Google ML Kit Selfie Segmentation**: High-precision neural network running locally on device for humans and portraits.
+  3. **Adaptive Saliency Segmentation Engine**: Edge-aware, center-weighted, and border contrast color-clustering detector for pets, cars, monuments, plants, and objects when no human is detected.
+- **Model Download & Bundling**:
+  - Download official MediaPipe models:
+    - *DeepLabV3*: `https://storage.googleapis.com/mediapipe-models/image_segmenter/deeplab_v3/float32/1/deeplab_v3.tflite`
+    - *Selfie Multiclass*: `https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite`
+  - Place `.tflite` files into `app/src/main/assets/models/` for automatic detection.
+  - Automatic fallback ensures the app operates 100% offline out-of-the-box even without external downloads.
 - **Manual Mask Refinement Tool**:
   - Interactive touch canvas with Paint (draw foreground) and Eraser (remove background) brush modes.
   - Brush radius slider (8px to 80px).
@@ -31,14 +38,16 @@ DepthLock is a complete, native Android application built with **Jetpack Compose
   - Full Undo / Redo history stack.
   - "Retry AI" and "Auto-Smooth Edges" operations.
 
-### 3. iOS-Style Depth Wallpaper Editor
+### 3. iOS-Style Depth Wallpaper Editor (`WallpaperEditorScreen.kt`)
 - **3D Depth Overlap**: Subject is layered in front of the clock while the remaining background layer sits behind it.
 - **Depth Shadow**: Realistic soft Gaussian drop shadow cast by the foreground subject onto the clock digits.
-- **Clock Customization**:
-  - 7 typography styles: Modern Round, Ultra Heavy, Serif Elegant, Tech Thin, Cyber Mono, Compact Bold, Stacked Poster.
-  - Dynamic size slider (64sp to 130sp).
-  - Vertical height positioning slider (-120dp to +140dp).
-  - 9 curated color palettes with individual tinting.
+- **Comprehensive Clock Customization**:
+  - **7 Font Typography Styles**: Modern Round, Ultra Heavy, Serif Elegant, Tech Thin, Cyber Mono, Compact Bold, Stacked Poster (with Android typography fallbacks).
+  - **Font Weights**: Thin (100), Regular (400), Medium (500), Bold (700), Heavy (900).
+  - **Dynamic Size Slider**: 60sp to 140sp with real-time text scaling.
+  - **Precise 2D Positioning**: Interactive direct dragging on canvas, vertical height slider (-150dp to +150dp), horizontal slider (-100dp to +100dp), and quick alignment buttons (Left, Center, Right).
+  - **Material Design Color Picker**: Curated Material 3 color chips plus custom color picker with Hue, Saturation, Value, and Hex input.
+  - **Readability & Aesthetics**: Built-in drop shadow layer, backdrop blur (0px to 25px), and dimming slider (0% to 65%) to ensure clock legibility against any background.
 - **Date & Widgets**:
   - Customizable date formats (`EEE, d MMM`, `d MMMM`, etc.).
   - Position: Above Clock or Below Clock.

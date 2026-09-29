@@ -42,5 +42,6 @@ class ExampleRobolectricTest {
     assertEquals("Test Wallpaper", wp.title)
     assertTrue(wp.depthOverlapEnabled)
     assertEquals(96f, wp.clockSizeSp, 0.01f)
+    assertEquals(0f, wp.clockHorizontalOffset, 0.01f)
   }
 }

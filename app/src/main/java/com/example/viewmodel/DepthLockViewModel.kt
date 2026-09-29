@@ -10,6 +10,7 @@ import com.example.data.local.DepthLockDatabase
 import com.example.data.model.DepthWallpaper
 import com.example.data.repository.WallpaperRepository
 import com.example.domain.compositor.WallpaperCompositor
+import com.example.domain.segmentation.ImageSegmentationHelper
 import com.example.domain.segmentation.SegmentationEngine
 import com.example.domain.wallpaper.ImageExportHelper
 import com.example.domain.wallpaper.WallpaperApplyResult
@@ -30,7 +31,7 @@ class DepthLockViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val database = DepthLockDatabase.getDatabase(application)
     private val repository = WallpaperRepository(application, database.wallpaperDao())
-    private val segmentationEngine = SegmentationEngine()
+    private val imageSegmentationHelper = ImageSegmentationHelper(application)
     private val wallpaperCompositor = WallpaperCompositor(application)
     private val wallpaperManagerHelper = WallpaperManagerHelper(application)
     private val imageExportHelper = ImageExportHelper(application)
@@ -138,7 +139,7 @@ class DepthLockViewModel(application: Application) : AndroidViewModel(applicatio
             _isProcessing.value = true
             _processingStatus.value = "Analyzing image with on-device AI..."
             try {
-                val result = segmentationEngine.segmentImage(targetBitmap)
+                val result = imageSegmentationHelper.processImage(targetBitmap)
                 _maskBitmap.value?.let { if (!it.isRecycled) it.recycle() }
                 _maskBitmap.value = result.maskBitmap
 
@@ -162,7 +163,7 @@ class DepthLockViewModel(application: Application) : AndroidViewModel(applicatio
             _maskBitmap.value = newMask
             val base = _croppedBitmap.value ?: _backgroundBitmap.value
             if (base != null) {
-                val updatedFg = segmentationEngine.extractForeground(base, newMask)
+                val updatedFg = imageSegmentationHelper.extractForeground(base, newMask)
                 _foregroundCutout.value?.let { if (!it.isRecycled) it.recycle() }
                 _foregroundCutout.value = updatedFg
             }
@@ -186,7 +187,7 @@ class DepthLockViewModel(application: Application) : AndroidViewModel(applicatio
                     val maskBm = BitmapFactory.decodeFile(maskFile.absolutePath)
 
                     if (baseBm != null && maskBm != null) {
-                        val fgBm = segmentationEngine.extractForeground(baseBm, maskBm)
+                        val fgBm = imageSegmentationHelper.extractForeground(baseBm, maskBm)
 
                         withContext(Dispatchers.Main) {
                             _croppedBitmap.value = baseBm

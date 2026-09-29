@@ -15,6 +15,7 @@ data class DepthWallpaper(
     val clockColorHex: String = "#FFFFFF",
     val clockSizeSp: Float = 96f,
     val clockVerticalOffset: Float = 0f,
+    val clockHorizontalOffset: Float = 0f,
     val clockFontWeight: String = "bold",
     val dateFormatPattern: String = "EEE, d MMM",
     val datePosition: String = "above_clock",

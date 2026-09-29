@@ -1,6 +1,6 @@
 # DepthLock – AI Depth Effect Wallpaper & Lock Screen
 
-DepthLock is a complete, native Android application built with **Jetpack Compose**, **Material 3**, and on-device **AI Computer Vision** that creates an authentic iOS-style depth effect for wallpapers. Users can select any custom photograph, isolate the foreground subject from the background, and create a 3D depth-effect wallpaper where the subject realistically overlaps behind and in front of the lock screen clock.
+DepthLock is a complete, native Android application built with **Jetpack Compose**, **Material 3**, and on-device **AI Computer Vision** that creates an authentic iOS-style depth effect for wallpapers. Users can select a custom photograph, isolate a foreground subject, and compose a wallpaper with a clock and subject layers. Android's native lock-screen clock is controlled by the system; a normal wallpaper app cannot place its image layer above that clock. The editor can preview a custom clock composition, but the native lock screen may render its own clock over the wallpaper.
 
 ---
 
@@ -74,7 +74,7 @@ DepthLock is a complete, native Android application built with **Jetpack Compose
 ---
 
 ## 🔒 Privacy & Performance
-- **100% On-Device AI**: Zero cloud uploads. All segmentation and compositing algorithms run locally on the smartphone CPU/GPU.
+- **On-device processing goal**: Segmentation and compositing are intended to run locally. Confirm the selected segmentation model and fallback path are available before relying on offline operation.
 - **Zero Data Collection**: No analytics SDKs, trackers, or external API keys required.
 - **Memory Optimized**: Employs bitmap downsampling during editing to avoid OutOfMemory (OOM) errors on mid-range devices (such as Motorola Moto G85 5G), rendering at full resolution only during final export.
 
@@ -84,7 +84,7 @@ DepthLock is a complete, native Android application built with **Jetpack Compose
 
 ### Build with Gradle
 ```bash
-gradle :app:assembleDebug
+./gradlew :app:assembleDebug
 ```
 The output APK will be generated at:
 ```
